@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Davyan Wong — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --white:  #0a0a0a;
+      --off:    #1a1a1a;
+      --ink:    #f0ede8;
+      --mid:    #a8a4a0;
+      --border: #2a2a2a;
+      --grab:   #00d15c;
+      --serif:  'DM Serif Display', Georgia, serif;
+      --sans:   'DM Sans', sans-serif;
+      --ease:   cubic-bezier(.22,.68,0,1.2);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--sans); background: var(--white); color: var(--ink); font-size: 16px; line-height: 1.6; overflow-x: hidden; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 5vw; background: rgba(10,10,10,.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-family: var(--serif); font-size: 1.1rem; color: var(--ink); text-decoration: none; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-size: .85rem; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--mid); text-decoration: none; transition: color .2s; }
+    .nav-links a:hover { color: var(--ink); }
+    .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding: 8rem 5vw 4rem; gap: 4rem; }
+    .hero-text { max-width: 540px; }
+    .hero-eyebrow { font-size: .8rem; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--grab); margin-bottom: 1.2rem; opacity: 0; animation: fadeUp .6s var(--ease) .1s forwards; }
+    .hero-name { font-family: var(--serif); font-size: clamp(2.8rem, 5vw, 4.4rem); line-height: 1.08; letter-spacing: -.02em; margin-bottom: 1.4rem; opacity: 0; animation: fadeUp .7s var(--ease) .25s forwards; }
+    .hero-name em { font-style: italic; color: var(--grab); }
+    .hero-desc { font-size: 1.05rem; font-weight: 300; color: var(--mid); line-height: 1.75; margin-bottom: 2rem; opacity: 0; animation: fadeUp .7s var(--ease) .4s forwards; }
+    .hero-cta { display: inline-flex; gap: 1rem; flex-wrap: wrap; opacity: 0; animation: fadeUp .7s var(--ease) .55s forwards; }
+    .btn { display: inline-block; padding: .75rem 1.8rem; border-radius: 2px; font-size: .85rem; font-weight: 500; letter-spacing: .04em; text-decoration: none; transition: all .25s; cursor: pointer; }
+    .btn-primary { background: var(--grab); color: #000; border: 1.5px solid var(--grab); font-weight: 600; }
+    .btn-primary:hover { background: #00b950; border-color: #00b950; transform: translateY(-2px); }
+    .btn-ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--border); }
+    .btn-ghost:hover { border-color: var(--grab); color: var(--grab); transform: translateY(-2px); }
+    .hero-visual { display: flex; align-items: center; justify-content: center; opacity: 0; animation: fadeIn .9s var(--ease) .6s forwards; }
+    .avatar-ring { width: 340px; height: 340px; border-radius: 50%; border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; position: relative; }
+    .avatar-ring::before { content: ''; position: absolute; inset: 12px; border-radius: 50%; border: 1px dashed var(--border); }
+    .avatar-inner { width: 240px; height: 240px; border-radius: 50%; background: var(--off); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .4rem; }
+    .avatar-initials { font-family: var(--serif); font-size: 3.5rem; color: var(--ink); line-height: 1; }
+    .avatar-tag { font-size: .7rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--mid); }
+    .chip { position: absolute; background: var(--off); border: 1px solid var(--border); border-radius: 30px; padding: .35rem .9rem; font-size: .72rem; font-weight: 500; letter-spacing: .04em; color: var(--mid); white-space: nowrap; box-shadow: 0 4px 16px rgba(0,0,0,.4); }
+    .chip-1 { top: 30px; right: -10px; animation: float 3.5s ease-in-out infinite; }
+    .chip-2 { bottom: 60px; left: -20px; animation: float 4s ease-in-out .7s infinite; }
+    .chip-3 { top: 50%; right: -40px; animation: float 3.8s ease-in-out .4s infinite; }
+    section { padding: 6rem 5vw; }
+    .section-label { display: inline-block; font-size: .75rem; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--grab); margin-bottom: .8rem; }
+    .section-title { font-family: var(--serif); font-size: clamp(1.9rem, 3.5vw, 2.8rem); line-height: 1.15; letter-spacing: -.02em; margin-bottom: 1rem; }
+    .section-sub { font-size: 1rem; font-weight: 300; color: var(--mid); max-width: 520px; margin-bottom: 3rem; }
+    .divider { width: 100%; height: 1px; background: var(--border); }
+    #about { background: var(--off); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .about-p { font-size: 1rem; font-weight: 300; color: var(--mid); line-height: 1.85; margin-bottom: 1.2rem; }
+    .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+    .skill-item { background: var(--white); border: 1px solid var(--border); border-radius: 4px; padding: .85rem 1rem; transition: border-color .2s, transform .2s; }
+    .skill-item:hover { border-color: var(--grab); transform: translateY(-2px); }
+    .skill-name { font-size: .85rem; font-weight: 500; color: var(--ink); margin-bottom: .25rem; }
+    .skill-tag { font-size: .72rem; color: var(--mid); letter-spacing: .04em; }
+    .projects-list { display: flex; flex-direction: column; gap: 2rem; }
+    .project-card { border: 1px solid var(--border); border-radius: 6px; overflow: hidden; display: grid; grid-template-columns: 380px 1fr; transition: box-shadow .3s, transform .3s; }
+    .project-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,.5); transform: translateY(-3px); }
+    .project-thumb { background: #000; min-height: 260px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .project-thumb-inner { text-align: center; padding: 2rem; }
+    .project-icon { font-size: 3.5rem; margin-bottom: .8rem; display: block; }
+    .project-tech-badge { display: inline-block; background: var(--off); border: 1px solid var(--border); border-radius: 2px; padding: .2rem .6rem; font-size: .7rem; font-weight: 500; letter-spacing: .06em; color: var(--mid); margin: .2rem; }
+    .project-body { padding: 2.2rem 2.4rem; display: flex; flex-direction: column; justify-content: center; background: var(--off); }
+    .project-number { font-size: .72rem; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--grab); margin-bottom: .6rem; }
+    .project-title { font-family: var(--serif); font-size: 1.6rem; line-height: 1.2; margin-bottom: .8rem; }
+    .project-desc { font-size: .95rem; font-weight: 300; color: var(--mid); line-height: 1.75; margin-bottom: 1.4rem; }
+    .project-role-label { font-size: .72rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--mid); margin-bottom: .5rem; }
+    .project-role-list { list-style: none; display: flex; flex-direction: column; gap: .35rem; margin-bottom: 1.6rem; }
+    .project-role-list li { font-size: .88rem; color: var(--ink); padding-left: 1rem; position: relative; }
+    .project-role-list li::before { content: '—'; position: absolute; left: 0; color: var(--grab); font-size: .75rem; }
+    .project-results { background: var(--white); border: 1px solid var(--border); border-radius: 4px; padding: .9rem 1.2rem; display: flex; gap: 2rem; flex-wrap: wrap; }
+    .result-stat { text-align: center; }
+    .result-num { font-family: var(--serif); font-size: 1.5rem; color: var(--grab); line-height: 1; display: block; }
+    .result-label { font-size: .7rem; color: var(--mid); letter-spacing: .06em; text-transform: uppercase; }
+    #experience { background: var(--off); }
+    .timeline { display: flex; flex-direction: column; }
+    .timeline-item { display: grid; grid-template-columns: 160px 1fr; gap: 2rem; padding: 2rem 0; border-bottom: 1px solid var(--border); }
+    .timeline-item:last-child { border-bottom: none; }
+    .timeline-date { font-size: .8rem; font-weight: 500; letter-spacing: .06em; color: var(--mid); padding-top: .2rem; }
+    .timeline-role { font-family: var(--serif); font-size: 1.2rem; margin-bottom: .2rem; }
+    .timeline-org { font-size: .85rem; color: var(--grab); font-weight: 500; margin-bottom: .7rem; }
+    .timeline-text { font-size: .9rem; font-weight: 300; color: var(--mid); line-height: 1.75; }
+    #contact { text-align: center; padding: 7rem 5vw; }
+    .contact-email { display: inline-block; font-family: var(--serif); font-size: clamp(1.6rem, 3vw, 2.4rem); color: var(--ink); text-decoration: none; border-bottom: 2px solid var(--grab); padding-bottom: .2rem; margin: 1.5rem 0 2.5rem; transition: color .2s; }
+    .contact-email:hover { color: var(--grab); }
+    .social-row { display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; }
+    .social-link { font-size: .8rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--mid); text-decoration: none; padding: .5rem 1.2rem; border: 1px solid var(--border); border-radius: 2px; transition: all .2s; }
+    .social-link:hover { border-color: var(--grab); color: var(--grab); }
+    footer { padding: 1.5rem 5vw; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: .5rem; }
+    footer p { font-size: .78rem; color: var(--mid); }
+    .grab-badge { display: inline-flex; align-items: center; gap: .4rem; font-size: .78rem; font-weight: 500; color: var(--mid); }
+    .grab-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--grab); }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; padding-top: 7rem; gap: 2rem; }
+      .hero-visual { display: none; }
+      .about-grid { grid-template-columns: 1fr; }
+      .project-card { grid-template-columns: 1fr; }
+      .project-thumb { min-height: 180px; }
+      .timeline-item { grid-template-columns: 1fr; gap: .5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">Davyan Wong</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-text">
+    <p class="hero-eyebrow">Payments Engineering Associate — Grab</p>
+    <h1 class="hero-name">Hi, I'm<br><em>Davyan Wong</em></h1>
+    <p class="hero-desc">
+      A diploma student in Information Technology, passionate about building reliable
+      payment systems and clean backend services. I write Python, work with REST APIs,
+      and care deeply about how technology moves money across Southeast Asia.
+    </p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-primary">View My Work</a>
+      <a href="#contact" class="btn btn-ghost">Get In Touch</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="avatar-ring">
+      <div class="avatar-inner">
+        <span class="avatar-initials">DW</span>
+        <span class="avatar-tag">IT Student · SG</span>
+      </div>
+      <div class="chip chip-1">Python · Go · SQL</div>
+      <div class="chip chip-2">REST APIs · JSON</div>
+      <div class="chip chip-3">GrabFin Payments</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="about">
+  <div class="reveal">
+    <span class="section-label">About Me</span>
+    <h2 class="section-title">Building things that<br>work at scale</h2>
+  </div>
+  <div class="about-grid reveal">
+    <div>
+      <p class="about-p">
+        I'm currently completing my Diploma in Information Technology at Nanyang Polytechnic.
+        My coursework has given me a strong foundation in web development, database management,
+        and software engineering — skills I'm eager to apply to real-world payment infrastructure.
+      </p>
+      <p class="about-p">
+        I'm drawn to the Payments Engineering Associate role at Grab because I believe
+        reliable, fast, and secure payment systems are the backbone of the digital economy.
+        I want to contribute to infrastructure that millions of users in Southeast Asia rely on every day.
+      </p>
+      <p class="about-p">
+        Outside of coursework, I enjoy exploring fintech topics such as KYC/AML flows,
+        payment reconciliation, and API design. I'm a methodical debugger and always strive
+        to write well-documented, clean code.
+      </p>
+    </div>
+    <div>
+      <div class="skills-grid">
+        <div class="skill-item"><div class="skill-name">Python</div><div class="skill-tag">Backend scripting & APIs</div></div>
+        <div class="skill-item"><div class="skill-name">SQL</div><div class="skill-tag">MySQL · PostgreSQL</div></div>
+        <div class="skill-item"><div class="skill-name">REST APIs</div><div class="skill-tag">HTTP · JSON · Postman</div></div>
+        <div class="skill-item"><div class="skill-name">JavaScript</div><div class="skill-tag">ES6 · DOM · Fetch API</div></div>
+        <div class="skill-item"><div class="skill-name">HTML / CSS</div><div class="skill-tag">Responsive Web Design</div></div>
+        <div class="skill-item"><div class="skill-name">Git & GitHub</div><div class="skill-tag">Version Control</div></div>
+        <div class="skill-item"><div class="skill-name">Cloud Basics</div><div class="skill-tag">AWS / Azure fundamentals</div></div>
+        <div class="skill-item"><div class="skill-name">Agile / Scrum</div><div class="skill-tag">Standups · Sprints</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="projects">
+  <div class="reveal">
+    <span class="section-label">Featured Projects</span>
+    <h2 class="section-title">Work I'm proud of</h2>
+    <p class="section-sub">
+      Projects from my IT1x25 Web Development module and personal explorations in
+      building functional, user-facing web applications.
+    </p>
+  </div>
+  <div class="projects-list">
+
+    <div class="project-card reveal">
+      <div class="project-thumb" style="padding:0; background:#000;">
+        <video width="100%" height="100%" controls style="display:block; min-height:260px; object-fit:cover;">
+          <source src="WhatsApp_Video_2026-02-18_at_1.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <div class="project-body">
+        <p class="project-number">Project 01 · IT1x25</p>
+        <h3 class="project-title">[Your Project Name] — Web Development Project</h3>
+        <p class="project-desc">
+          A full-stack web application built for the IT1x25 module. [Replace this with a
+          1–2 sentence description of what your project does and the problem it solves.]
+          The system handled user authentication, product/data management, and real-time
+          updates via REST API calls.
+        </p>
+        <p class="project-role-label">My Role & Contributions</p>
+        <ul class="project-role-list">
+          <li>Designed and implemented the database schema using SQL, ensuring normalised data storage.</li>
+          <li>Built backend REST API endpoints in Python to handle CRUD operations and data validation.</li>
+          <li>Developed the frontend interface with HTML, CSS, and JavaScript, consuming the API with Fetch.</li>
+          <li>Wrote documentation and runbooks for the project setup and deployment process.</li>
+        </ul>
+        <div class="project-results">
+          <div class="result-stat"><span class="result-num">4</span><span class="result-label">Team Members</span></div>
+          <div class="result-stat"><span class="result-num">6</span><span class="result-label">Weeks Built</span></div>
+          <div class="result-stat"><span class="result-num">A</span><span class="result-label">Grade Achieved</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-thumb" style="padding:0; background:#000;">
+        <video width="100%" height="100%" controls style="display:block; min-height:260px; object-fit:cover;">
+          <source src="UX_vid.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <div class="project-body">
+        <p class="project-number">Project 02 · Personal Project</p>
+        <h3 class="project-title">Volleyball Website</h3>
+        <p class="project-desc">
+          A personal project to deepen my UX and web development skills. Built a responsive multi-page website for an NYP Volleyball team, featuring structured navigation, training schedule components, and interactive contact forms, with emphasis on user experience and visual consistency.
+        </p>
+        <p class="project-role-label">My Role & Contributions</p>
+        <ul class="project-role-list">
+          <li>Developed multi-page website components with structured navigation and reusable UI elements.</li>
+          <li>Implemented responsive design techniques to ensure consistent experience across screen sizes.</li>
+          <li>Organized content and assets systematically to support scalability and maintainability.</li>
+          <li>Created project documentation outlining features, design rationale, and deployment steps.</li>
+        </ul>
+        <div class="project-results">
+          <div class="result-stat"><span class="result-num">5</span><span class="result-label">API Endpoints</span></div>
+          <div class="result-stat"><span class="result-num">100%</span><span class="result-label">Test Coverage</span></div>
+          <div class="result-stat"><span class="result-num">Solo</span><span class="result-label">Built Alone</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="experience">
+  <div class="reveal">
+    <span class="section-label">Experience</span>
+    <h2 class="section-title">Where I've learned & grown</h2>
+  </div>
+  <div class="timeline reveal">
+
+    <div class="timeline-item">
+      <div class="timeline-date">2027 – Present</div>
+      <div class="timeline-body">
+        <div class="timeline-role">IT Intern — [Company Name]</div>
+        <div class="timeline-org">[Department / Team]</div>
+        <p class="timeline-text">
+          Supported the backend team in maintaining REST API documentation and testing endpoints
+          using Postman. Identified and reported a data validation bug that reduced erroneous
+          payment records by [X]%. Collaborated with senior engineers during daily standups and
+          sprint reviews.
+        </p>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-date">2026 – 2027</div>
+      <div class="timeline-body">
+        <div class="timeline-role">Part-time Web Developer — [Freelance / Organisation]</div>
+        <div class="timeline-org">Self-employed</div>
+        <p class="timeline-text">
+          [Describe any part-time, freelance, or CCA leadership role here. Highlight teamwork,
+          deliverables, and measurable outcomes using STAR format. Replace with your actual experience.]
+        </p>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-date">2025 – 2028</div>
+      <div class="timeline-body">
+        <div class="timeline-role">Diploma in Information Technology</div>
+        <div class="timeline-org">Nanyang Polytechnic · Singapore</div>
+        <p class="timeline-text">
+          Pursuing a Diploma in Information Technology with modules in Web Development,
+          Database Management, Networking, and Applied AI. Active member of Singink,
+          where I served as [role] and organised [event/achievement].
+          Maintained a GPA of [X.X] with Distinction in [relevant modules].
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="contact">
+  <div class="reveal">
+    <span class="section-label">Get In Touch</span>
+    <h2 class="section-title">Let's connect</h2>
+    <p class="section-sub" style="margin: 0 auto; text-align:center;">
+      I'm actively applying for the Payments Engineering Associate role at Grab.
+      Feel free to reach out — I'd love to chat.
+    </p>
+  </div>
+  <div class="reveal">
+    <a href="mailto:davyanwong@gmail.com" class="contact-email">davyanwong@gmail.com</a>
+  </div>
+  <div class="social-row reveal">
+    <a href="#" class="social-link">LinkedIn</a>
+    <a href="#" class="social-link">GitHub</a>
+    <a href="#" class="social-link">Download CV</a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2028 Davyan Wong · All rights reserved</p>
+  <span class="grab-badge">
+    <span class="grab-dot"></span>
+    Applying for Payments Engineering Associate · Grab Holdings
+  </span>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
